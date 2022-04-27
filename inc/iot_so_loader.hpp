@@ -15,7 +15,7 @@ public:
     SoLoader& operator=(SoLoader const& a_src) = default;
     
     template<typename FuncPtr>
-    FuncPtr handle(std::string const& a_func);
+    FuncPtr fetch(std::string const& a_func);
 
 public:
     void* m_soHandle;

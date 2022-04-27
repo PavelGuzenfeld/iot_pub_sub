@@ -1,7 +1,6 @@
-#pragma once
-
+#include "iot_device.hpp"
+#include "BufferProxy.hpp"
 #include <queue>
-
 
 namespace iot
 {
@@ -15,9 +14,10 @@ Device::Device(std::string a_id, std::string a_type, Location a_location, std::s
 
 }
 
-void publish(Buffer a_msg, EventsQueue a_queueOfPubEvents)
+void publish(Buffer* a_msg, EventsQueue a_queueOfPubEvents)
 {
-
+    Buffer eventToPublish = decode(a_msg);
+    a_queueOfPubEvents.push_back(eventToPublish);
 }
 
 } // namespace iot

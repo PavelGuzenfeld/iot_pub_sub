@@ -10,7 +10,7 @@ SoLoader::SoLoader(std::string const& a_path)
 {
     if(!m_soHandle)
     {
-        throw std::runtime_error("failed to load library\n");
+        throw std::runtime_error("failed to load library " + std::string(dlerror()));
     }
 }
 
@@ -20,9 +20,13 @@ SoLoader::~SoLoader()
 }
 
 template<typename FuncPtr>
-FuncPtr SoLoader::handle(std::string const& a_func)
+FuncPtr SoLoader::fetch(std::string const& a_func)
 {
     FuncPtr funcPtr = reinterpret_cast<FuncPtr>(dlsym(m_soHandle,a_func.c_str());
+    if(!funcPtr)
+    {
+        throw std::runtime_error("failed to fetch function " +std::string(dlerror()
+    }
     return funcPtr;
 }
 
