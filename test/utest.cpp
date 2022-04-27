@@ -25,7 +25,7 @@ BEGIN_TEST(sensor_and_controller_in_router)
     using STRING = std::string;
     using EVENT = iot::Event<STRING,STRING,STRING>;
     using DEVICE = iot::Device<STRING, STRING, EVENT>;
-    auto sensor = DEVICE{"id - head sensor 1","type - heat_sensor"," location - floor 1", "no config"};
+    auto sensor = DEVICE{"id - temperature sensor 1","type - heat_sensor"," location - floor 1", "no config"};
     auto airCon1 = DEVICE{"id - air conditioner 1","type - air_con"," location - floor 1", "temp > 30"};
     auto airCon2 = DEVICE{"id - air conditioner 2","type - air_con"," location - floor 1", "temp > 30"};
  
