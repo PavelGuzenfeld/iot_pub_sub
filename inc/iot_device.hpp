@@ -1,3 +1,5 @@
+#pragma once
+
 #include "iot_event.hpp"
 
 namespace iot
@@ -16,6 +18,9 @@ private:
     STRING m_id;
     STRING m_type;
     LOCATION m_location;
+    STRING m_config;
 };
+
+#include "inl/iot_device.hxx"
 
 } // namespace iot
