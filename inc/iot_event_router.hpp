@@ -7,16 +7,16 @@
 namespace iot
 {
  
-template<typename EVENT, typename DEVICE, typename CONTAINER = std::map<EVENT,std::vector<DEVICE>>>
+template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER = std::map<KEY,std::vector<DEVICE>>>
 class EventRouter
 {
 public:
     EventRouter(CONTAINER && a_subs);
-    void rout(EVENT const& a_event);
+    //TODO: EventRouter(CONTAINER const& a_subs);
+    void rout(EVENT const& a_event) const;
 
 private:
     CONTAINER m_subs; 
-
 };
 
 #include "inl/iot_event_router.hxx"

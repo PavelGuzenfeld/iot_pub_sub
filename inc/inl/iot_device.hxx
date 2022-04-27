@@ -15,16 +15,16 @@ Device<STRING,LOCATION,EVENT>::Device(STRING a_id, STRING a_type, LOCATION a_loc
 template<typename STRING, typename LOCATION, typename EVENT>
 EVENT Device<STRING,LOCATION,EVENT>::publish()
 {
-    static unsigned int id = 0;
-    ++id;
+    static unsigned int temp = 0;
+    ++temp;
     time_t ptm = time(nullptr);
     struct tm* curtime = localtime ( &ptm );
-    return EVENT{std::to_string(id), std::string(asctime(curtime)), std::to_string(m_location), std::to_string(m_id), std::to_string(m_type), "event data"};
+    return EVENT{"temperature", std::string(asctime(curtime)), m_location, m_id, m_type, std::to_string(temp)};
 }
 
 template<typename STRING, typename LOCATION, typename EVENT>
 void Device<STRING,LOCATION,EVENT>::Device::subscribe(EVENT const& a_event)
 {
-    std::cout << a_event.id << " " << a_event.m_eventTime << "\n";
+    std::cout << m_id << " " << m_type << " " << a_event.m_eventType << " " << a_event.m_eventTime << "\n";
 }
 

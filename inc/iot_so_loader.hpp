@@ -9,15 +9,16 @@ class SoLoader
 {
 public:
     explicit SoLoader(std::string const& a_path);
-
     ~SoLoader();
+
     SoLoader(SoLoader const& a_src) = default;
     SoLoader& operator=(SoLoader const& a_src) = default;
     
-    template<typename FuncPtr>
-    FuncPtr fetch(std::string const& a_func);
+    template<typename FUNCPTR>
+    FUNCPTR fetch(std::string const& a_func);
 
 public:
+    //TODO: switch to unique_ptr
     void* m_soHandle;
 };
 
