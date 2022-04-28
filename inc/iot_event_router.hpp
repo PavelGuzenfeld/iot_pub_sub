@@ -12,6 +12,8 @@ class EventRouter
 {
 public:
     EventRouter(CONTAINER && a_subs);
+    ~EventRouter() = default;
+
     //TODO: EventRouter(CONTAINER const& a_subs);
     void rout(EVENT const& a_event) const;
 
@@ -24,3 +26,7 @@ private:
 }   //namespace iot
 
 #endif // IOT_EVENT_ROUTER_HPP
+
+//TODO: change container to better name
+//TODO: change key to better name
+//TODO: add default cctor and operator=()
