@@ -39,12 +39,8 @@ void* PubSubFO<ROUTER, QUEUE, EVENT>::operator()(void* a_arg)
 {
     while(isON() == true)
     {
-        // EVENT next;
-        // m_queue.dequeue(next);
-        // m_router.rout(next);
-        auto rout = [this](EVENT const& next) { m_router.rout(next);};
+        auto rout = [this](EVENT const& a_next) { m_router.rout(a_next);};
         m_queue.dequeue(rout);
-
     }
     return this;
 }

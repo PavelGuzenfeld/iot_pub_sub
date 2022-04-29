@@ -82,8 +82,8 @@ BEGIN_TEST(pub_sub)
 END_TEST
 
 BEGIN_SUITE(IOT PROJECT)
-    // TEST(router_creat)
-    // TEST(creat_device)
-    // TEST(sensor_and_controller_in_router)
+    TEST(router_creat)
+    TEST(creat_device)
+    TEST(sensor_and_controller_in_router)
     TEST(pub_sub)
 END_SUITE
