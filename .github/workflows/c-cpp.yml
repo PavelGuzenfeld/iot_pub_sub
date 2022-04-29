@@ -13,6 +13,17 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: make check
+    
+    - name: Install SFML
+      run: sudo apt-get install -y libsfml-dev
+    
+    - name: install valgrind
+      run: sudo apt-get install -y valgrind
+    
+    - name: run unit test 
       run: make check
+      working-directory: test
+      
+    - name: valgrind
+      run: make vala-git
       working-directory: test

@@ -32,6 +32,11 @@ valgrind: $(TARGET)
 	valgrind --tool=helgrind --log-file=log_helgrind.log ./$(TARGET)
 	valgrind --tool=drd --log-file=log_drd.log ./$(TARGET)
 
+vala-git: $(TARGET)
+	valgrind --leak-check=full --track-origins=yes  ./$(TARGET)
+	valgrind --tool=helgrind  ./$(TARGET)
+	valgrind --tool=drd  ./$(TARGET)
+	
 prod: CXXFLAGS += -O2 -DNDEBUG
 prod: $(TARGET)
 	./$(TARGET) -v
