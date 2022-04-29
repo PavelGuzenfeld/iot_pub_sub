@@ -1,8 +1,8 @@
 #ifndef IOT_EVENT_ROUTER_HPP
 #define IOT_EVENT_ROUTER_HPP
 
-#include<map>
-#include<vector>
+#include <map>
+#include <vector>
 
 namespace iot
 {
@@ -18,7 +18,7 @@ public:
     void rout(EVENT const& a_event) const;
 
 private:
-    CONTAINER m_subs; 
+    CONTAINER m_subs;
 };
 
 #include "inl/iot_event_router.hxx"

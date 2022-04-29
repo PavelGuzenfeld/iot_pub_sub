@@ -3,6 +3,7 @@
 
 #include <condition_variable>
 #include <mutex>
+#include <functional>
 #include "queue.hpp"
 #include "blocking_queue_exception.hpp"
 
@@ -19,6 +20,7 @@ public:
 
     bool enqueue(T const& a_element);
     bool dequeue(T& a_retVal);
+    bool dequeue(std::function<void(T const& a_retVal)> a_func);
     bool dequeue();
     bool first(T& a_status) const;
 

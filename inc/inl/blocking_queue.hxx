@@ -99,6 +99,31 @@ catch(...)
 }
 
 template<typename T>
+bool mt::BlockingQueue<T>::dequeue(std::function<void(T const& a_retVal)> a_func)
+try
+{
+    std::unique_lock l(m_mutex);
+    m_condVar.wait(l, [this]{return m_queue.isEmpty() == false || m_shutdown == true;});
+    if(m_shutdown == true)
+    {
+        return false;
+    }
+    else
+    {
+        auto retRef = m_queue.first();
+        a_func(retRef);
+        m_queue.dequeue();
+        m_condVar.notify_all();
+    }
+    return true;
+}
+catch(...)
+{
+    std::string msg = "Dequeue failed";
+    throw BlockingQueueDequeueFailed(msg); 
+}
+
+template<typename T>
 bool mt::BlockingQueue<T>::first(T& a_retRef) const
 try
 {
