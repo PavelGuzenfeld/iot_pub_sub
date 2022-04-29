@@ -32,12 +32,10 @@ jobs:
       with:
         languages: ${{ matrix.language }}
         
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-
-    #- run: |
-    #   make bootstrap
-    #   make release
+#     - name: Autobuild
+#       uses: github/codeql-action/autobuild@v2
+    - run: make check
+      working-directory: test
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
