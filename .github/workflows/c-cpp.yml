@@ -25,5 +25,5 @@ jobs:
       working-directory: test
       
     - name: valgrind
-      run: make valgrind
+      run: make vala-git
       working-directory: test
