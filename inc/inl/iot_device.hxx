@@ -8,7 +8,7 @@ Device<STRING,LOCATION,EVENT>::Device(STRING const& a_id, STRING const& a_type, 
 , m_type(a_type)
 , m_location(a_location)
 , m_config(a_config)
-{
+{   
 
 }
 
