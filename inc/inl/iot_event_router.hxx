@@ -17,7 +17,7 @@ void iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::rout(EVENT const& a_event) co
         return;
     }
 
-    auto devices = subscribed->second;
+    auto const& devices = subscribed->second;
     for(auto d: devices)
     {
         d.subscribe(a_event);

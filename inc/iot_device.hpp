@@ -9,7 +9,7 @@ template<typename STRING, typename LOCATION, typename EVENT>
 class Device
 {
 public:
-    Device(STRING a_id, STRING a_type, LOCATION a_location, STRING a_config);
+    Device(STRING const& a_id, STRING const& a_type, LOCATION const& a_location, STRING const& a_config);
 
     EVENT publish();
     void subscribe(EVENT const& a_event);

@@ -1,6 +1,8 @@
 #ifndef THREAD_MAP_HXX
 #define THREAD_MAP_HXX
 
+#include <map>
+
 template<typename K, typename V>
 struct MapData
 {

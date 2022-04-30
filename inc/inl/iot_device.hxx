@@ -3,7 +3,7 @@
 #include <iostream>
 
 template<typename STRING, typename LOCATION, typename EVENT>
-Device<STRING,LOCATION,EVENT>::Device(STRING a_id, STRING a_type, LOCATION a_location, STRING a_config)
+Device<STRING,LOCATION,EVENT>::Device(STRING const& a_id, STRING const& a_type, LOCATION const& a_location, STRING const& a_config)
 : m_id(a_id)
 , m_type(a_type)
 , m_location(a_location)

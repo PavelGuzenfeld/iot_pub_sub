@@ -1,7 +1,6 @@
 #ifndef CONCURRENT_MAP_HPP
 #define CONCURRENT_MAP_HPP
 
-#include <map>
 #include <string>
 #include <functional>
 #include "mutex.hpp"
