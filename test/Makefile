@@ -12,13 +12,16 @@ CPPFLAGS = $(INC_DIR)
 INC_DIR = -I ../inc
 INC_DIR += -I /home/linuxbrew/.linuxbrew/include/
 
-LDLIBS = -L /home/linuxbrew/.linuxbrew/lib/ -lpthread -lsfml-graphics -lsfml-window -lsfml-system
+LDLIBS = -lpthread -lsfml-graphics -lsfml-window -lsfml-system
+LDFLAGS = -L /home/linuxbrew/.linuxbrew/lib/
 
 TARGET = utest
 
 OBJS = utest.o
 
 $(TARGET): $(OBJS)
+
+all : $(TARGET)
 
 check: $(TARGET)
 	./$(TARGET) -v
@@ -44,4 +47,4 @@ prod: $(TARGET)
 clean:
 	@$(RM) $(TARGET) $(OBJS) *.txt
 
-.PHONY: clean check debug
+.PHONY: clean check debug prod
