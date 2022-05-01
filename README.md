@@ -2,5 +2,4 @@
 IOT pub-sub project
 
 ## Dependencies
-1. SFML
-2. nlohmann/json
+1. nlohmann/json
