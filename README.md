@@ -1,4 +1,6 @@
 # iot_pub_sub
 IOT pub-sub project
 
-hello paul
+## Dependencies
+1. SFML
+2. nlohmann/json
