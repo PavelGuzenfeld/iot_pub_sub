@@ -10,7 +10,7 @@ CXX_STD = c++17
 
 CXXFLAGS = $(WARNINGS) $(DEBUG) -std=$(CXX_STD)
 CPPFLAGS = $(INC_DIR)
-INC_DIR = -I ../../inc
+INC_DIR = -I ../inc
 INC_DIR += -I /home/linuxbrew/.linuxbrew/include/
 
 LDLIBS = -lpthread -lsfml-graphics -lsfml-window -lsfml-system
@@ -27,15 +27,6 @@ all : $(TARGET)
 check: $(TARGET)
 	./$(TARGET) -v
 
-debug: $(TARGET)
-	valgrind --leak-check=full ./${TARGET}
-	gdb -q ${TARGET}
-
-valgrind: $(TARGET)
-	valgrind --leak-check=full --track-origins=yes --log-file=log_valgrin.log ./$(TARGET)
-	valgrind --tool=helgrind --log-file=log_helgrind.log ./$(TARGET)
-	valgrind --tool=drd --log-file=log_drd.log ./$(TARGET)
-
 vala-git: $(TARGET)
 	valgrind --leak-check=full --track-origins=yes  ./$(TARGET)
 	valgrind --tool=helgrind  ./$(TARGET)
@@ -48,4 +39,4 @@ prod: $(TARGET)
 clean:
 	@$(RM) $(TARGET) $(OBJS) *.txt
 
-.PHONY: clean check debug prod
+.PHONY: clean check debug prod all
