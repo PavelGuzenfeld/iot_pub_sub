@@ -12,10 +12,11 @@ class Device
 public:
     Device(STRING const& a_id, STRING const& a_type, LOCATION const& a_location, STRING const& a_config);
 
-    EVENT publish();
-    void subscribe(EVENT const& a_event);
+    EVENT produce(STRING const& a_eventType, STRING const& a_data);
+    void consume(EVENT const& a_event);
 
     std::vector<EVENT> const& getEvents() const;
+
 private:
     std::vector<EVENT> m_events;
 
