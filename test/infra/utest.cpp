@@ -18,7 +18,7 @@ END_TEST
 
 BEGIN_TEST(creat_device)
 {
-    auto event = iot::Device<std::string, std::string, std::string>{"id - device1","type - heat"," location - floor 1", " no config"};
+    auto device = iot::Device<std::string, std::string, std::string>{"id - device1","type - heat"," location - floor 1", " no config"};    
     ASSERT_PASS();
 }
 END_TEST
@@ -27,13 +27,13 @@ BEGIN_TEST(sensor_and_controller_in_router)
 {
     using STRING = std::string;
     using EVENT = iot::Event<STRING,STRING,STRING>;
-    using DEVICE = iot::Device<STRING, STRING, EVENT>;
+    using Device = iot::Device<STRING, STRING, EVENT>;
 
-    auto sensor = DEVICE{"id - temperature sensor 1","type - heat_sensor"," location - floor 1", "no config"};
-    auto airCon1 = DEVICE{"id - air conditioner 1","type - air_con"," location - floor 1", "temp > 30"};
-    auto airCon2 = DEVICE{"id - air conditioner 2","type - air_con"," location - floor 1", "temp > 30"};
+    auto sensor = Device{"id - temperature sensor 1","type - heat_sensor"," location - floor 1", "no config"};
+    auto airCon1 = Device{"id - air conditioner 1","type - air_con"," location - floor 1", "temp > 30"};
+    auto airCon2 = Device{"id - air conditioner 2","type - air_con"," location - floor 1", "temp > 30"};
  
-    auto r = iot::EventRouter<STRING,EVENT,DEVICE>{{ {"temperature", {airCon1,airCon2}} }};
+    auto r = iot::EventRouter<STRING,EVENT,Device>{{ {"temperature", {airCon1,airCon2}} }};
 
     for(size_t i = 0; i<5; ++i)
     {
@@ -44,7 +44,10 @@ BEGIN_TEST(sensor_and_controller_in_router)
         TRACER<< event.m_deviceID << " " <<event.m_eventType << "\n";
     }
 
-    ASSERT_PASS();
+    auto const& e1 = airCon1.getEvents();
+    auto count = e1.size();
+
+    ASSERT_EQUAL(count, 5);
 }
 END_TEST
 
