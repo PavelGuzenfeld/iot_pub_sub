@@ -775,6 +775,7 @@ dif /* dx/dy */
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wcast-qual"
+#pragma GCC diagnostic ignored "-Wmisleading-indentation"
 
 #define XUNIT(name) __FUNTASTICUSI __UNIQUE_NAME_(name)(__o__){__FUNTASTIKUS __testName= #name;
 #define TEST_IMPL(unit)		       {__fine__ +**&**&unit, #unit, !#unit},
