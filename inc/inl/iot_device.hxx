@@ -23,8 +23,15 @@ EVENT Device<STRING,LOCATION,EVENT>::publish()
 }
 
 template<typename STRING, typename LOCATION, typename EVENT>
-void Device<STRING,LOCATION,EVENT>::Device::subscribe(EVENT const& a_event)
+void Device<STRING,LOCATION,EVENT>::subscribe(EVENT const& a_event)
 {
-    std::cout << m_id << " " << m_type << " " << a_event.m_eventType << " " << a_event.m_eventTime << "\n";
+    m_events.push_back(a_event);
+    //std::cout << m_id << " " << m_type << " " << a_event.m_eventType << " " << a_event.m_eventTime << "\n";
+}
+
+template<typename STRING, typename LOCATION, typename EVENT>
+std::vector<EVENT> const& Device<STRING,LOCATION,EVENT>::getEvents() const
+{
+    return m_events;
 }
 

@@ -3,7 +3,8 @@ CXX = g++
 CC = $(CXX)
 
 WARNINGS = -pedantic
-WARNINGS += -Wall -Werror
+WARNINGS += -Wall
+WARNINGS += -Werror
 DEBUG = -g3
 CXX_STD = c++17
 
