@@ -1,6 +1,7 @@
 #pragma once
 
 #include "iot_event.hpp"
+#include <vector>
 
 namespace iot
 {
@@ -13,6 +14,10 @@ public:
 
     EVENT publish();
     void subscribe(EVENT const& a_event);
+
+    std::vector<EVENT> const& getEvents() const;
+private:
+    std::vector<EVENT> m_events;
 
 private:
     STRING m_id;
