@@ -9,7 +9,14 @@ iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER && a_subs)
 }
 
 template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
-void iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::rout(EVENT const& a_event) const
+iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER const& a_subs)
+:   m_subs(a_subs)
+{
+
+}
+
+template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
+void iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::rout(EVENT const& a_event)
 {
     auto subscribed = m_subs.find(a_event.m_eventType);
     if(subscribed == m_subs.end())
@@ -17,10 +24,10 @@ void iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::rout(EVENT const& a_event) co
         return;
     }
 
-    auto const& devices = subscribed->second;
-    for(auto d: devices)
+    auto& devices = subscribed->second;
+    for(auto& d: devices)
     {
-        d.subscribe(a_event);
+        d.consume(a_event);
     }
 }
 

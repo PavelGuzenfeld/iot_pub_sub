@@ -11,11 +11,11 @@ template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER = std
 class EventRouter
 {
 public:
-    EventRouter(CONTAINER && a_subs);
+    explicit EventRouter(CONTAINER && a_subs);
+    explicit EventRouter(CONTAINER const& a_subs);
     ~EventRouter() = default;
 
-    //TODO: EventRouter(CONTAINER const& a_subs);
-    void rout(EVENT const& a_event) const;
+    void rout(EVENT const& a_event);
 
 private:
     CONTAINER m_subs;
