@@ -20,10 +20,10 @@ jobs:
     - name: install valgrind
       run: sudo apt-get install -y valgrind
     
-    - name: run unit test 
+    - name: infra unit test 
       run: make check
-      working-directory: test
+      working-directory: test/infra
       
-    - name: valgrind
+    - name: infra valgrind
       run: make vala-git
-      working-directory: test
+      working-directory: test/infra
