@@ -9,7 +9,7 @@ CXX_STD = c++17
 
 CXXFLAGS = $(WARNINGS) $(DEBUG) -std=$(CXX_STD)
 CPPFLAGS = $(INC_DIR)
-INC_DIR = -I ../inc
+INC_DIR = -I ../../inc
 INC_DIR += -I /home/linuxbrew/.linuxbrew/include/
 
 LDLIBS = -lpthread -lsfml-graphics -lsfml-window -lsfml-system
