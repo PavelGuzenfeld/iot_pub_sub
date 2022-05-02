@@ -17,7 +17,7 @@ struct EventHandler : public cpp::Abstract
 {
     EventHandler() = default;
     virtual void storeEvent(EVENT const& a_event) = 0;
-    virtual void handleEvent() = 0;
+    virtual EVENT handleEvent() = 0;
 };
 
 }   //namespace iot
