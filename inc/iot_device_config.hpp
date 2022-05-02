@@ -13,6 +13,7 @@ struct DeviceConfig
     unsigned int m_floor;
     std::string m_log;
     std::string m_config;
+    std::string m_so;
 };
 
 } // namespace iot

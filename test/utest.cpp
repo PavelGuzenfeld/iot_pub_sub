@@ -9,6 +9,8 @@
 #include "iot_event.hpp"
 #include "iot_event_router.hpp"
 #include "iot_pub_sub.hpp"
+#include "iot_agent_factory.hpp"
+#include "iot_ini_reader.hpp"
 #include "blocking_queue.hpp"
 #include "thread_group.hpp"
 
@@ -109,8 +111,26 @@ END_TEST
 // }
 // END_TEST
 
+BEGIN_TEST(so)
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using Device = iot::Device<String, String, Event>;
+    using Agent = iot::AgentFactory<Device, ConfigFile>;
+
+    
+END_TEST
+
+
 BEGIN_SUITE(IOT PROJECT)
+<<<<<<< HEAD
     TEST(temperature_sensor)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
+=======
+    TEST(router_creat)
+    TEST(device_creat)
+    TEST(send_events_to_router)
+    TEST(pub_sub)
+    TEST(so)
+>>>>>>> f4cf87a93a5257ed53240c803e2102fd84e1973b
 END_SUITE
