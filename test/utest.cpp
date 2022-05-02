@@ -19,9 +19,14 @@ BEGIN_TEST(temperature_sensor)
     using Thermometer = iot::TemperatureSensor<String, String, Event>;
 
     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-    sensor.
+    auto event = sensor.produceEvent();
+    
+    TRACER << "time - " << event.m_eventTime << " | data: " << event.m_data << "\n"; 
+    ASSERT_EQUAL_STR(event.m_eventType.c_str(), "temperature");
+    ASSERT_EQUAL_STR(event.m_deviceID.c_str(), "T-1");
+    ASSERT_EQUAL_STR(event.m_deviceType.c_str(), "Thermometer");
+    ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
 
-    ASSERT_PASS();
 }
 END_TEST  
 
