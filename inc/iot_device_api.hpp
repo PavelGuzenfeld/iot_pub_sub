@@ -16,7 +16,7 @@ template <typename STRING>
 struct Controller : public cpp::Abstract
 {
     Controller() = default;
-    virtual void handle(STRING const& a_eventData) = 0;
+    virtual STRING handle(STRING const& a_eventData) = 0;
 };
 
 }   //namespace iot

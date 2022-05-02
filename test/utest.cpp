@@ -28,8 +28,18 @@ BEGIN_TEST(temperature_sensor)
     ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
 
 }
-END_TEST  
+END_TEST
 
+BEGIN_TEST(air_con)
+{
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using Thermometer = iot::TemperatureSensor<String, String, Event>;
+
+    auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
+    auto event = sensor.produceEvent();  
+}
+END_TEST
 // BEGIN_TEST(send_events_to_router)
 // {
 //     using String = std::string;
