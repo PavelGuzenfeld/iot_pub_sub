@@ -6,6 +6,8 @@
 #include "iot_event_router.hpp"
 #include "iot_device.hpp"
 #include "iot_pub_sub.hpp"
+#include "iot_agent_factory.hpp"
+#include "iot_ini_reader.hpp"
 #include "blocking_queue.hpp"
 #include "thread_group.hpp"
 
@@ -98,9 +100,20 @@ BEGIN_TEST(pub_sub)
 }
 END_TEST
 
+BEGIN_TEST(so)
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using Device = iot::Device<String, String, Event>;
+    using Agent = iot::AgentFactory<Device, ConfigFile>;
+
+    
+END_TEST
+
+
 BEGIN_SUITE(IOT PROJECT)
     TEST(router_creat)
     TEST(device_creat)
     TEST(send_events_to_router)
     TEST(pub_sub)
+    TEST(so)
 END_SUITE
