@@ -1,4 +1,4 @@
-#bricks makefile
+#IOT Pub Sub makefile
 CXX = g++
 CC = $(CXX)
 
@@ -12,9 +12,8 @@ CXXFLAGS = $(WARNINGS) $(DEBUG) -std=$(CXX_STD)
 CPPFLAGS = $(INC_DIR)
 INC_DIR = -I ../inc
 INC_DIR += -I /home/linuxbrew/.linuxbrew/include/
-
-LDLIBS = -lpthread -lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS = -L /home/linuxbrew/.linuxbrew/lib/
+LDLIBS = -lpthread
 
 TARGET = utest
 
