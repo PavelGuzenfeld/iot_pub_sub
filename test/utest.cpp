@@ -122,15 +122,7 @@ END_TEST
 
 
 BEGIN_SUITE(IOT PROJECT)
-<<<<<<< HEAD
     TEST(temperature_sensor)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
-=======
-    TEST(router_creat)
-    TEST(device_creat)
-    TEST(send_events_to_router)
-    TEST(pub_sub)
-    TEST(so)
->>>>>>> f4cf87a93a5257ed53240c803e2102fd84e1973b
 END_SUITE
