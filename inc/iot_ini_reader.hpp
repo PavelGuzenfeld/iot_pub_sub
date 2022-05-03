@@ -4,7 +4,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "json.hpp"
 #include "ini.h"
 #include "iot_device_config.hpp"
 
