@@ -1,47 +1,47 @@
 #include "mu_test.h"
 #include <string>
-#include <chrono>
-#include <thread>
+// #include <chrono>
+// #include <thread>
 #include <blocking_queue.hpp>
 #include <memory>
-#include "iot_temperature_sensor.hpp"
-#include "iot_backlog.hpp"
-#include "iot_event.hpp"
-#include "iot_event_router.hpp"
-#include "iot_pub_sub.hpp"
-#include "blocking_queue.hpp"
-#include "thread_group.hpp"
-//#include "iot_agent_factory.hpp"
-//#include "iot_ini_reader.hpp"
+// #include "iot_temperature_sensor.hpp"
+// #include "iot_backlog.hpp"
+// #include "iot_event.hpp"
+// #include "iot_event_router.hpp"
+// #include "iot_pub_sub.hpp"
+#include "iot_agent_factory.hpp"
+#include "iot_ini_reader.hpp"
+// #include "blocking_queue.h/pp"
+// #include "thread_group.hpp"
 
-BEGIN_TEST(temperature_sensor)
-{
-    using String = std::string;
-    using Event = iot::Event<String,String,String>;
-    using Thermometer = iot::TemperatureSensor<String, String, Event>;
+// BEGIN_TEST(temperature_sensor)
+// {
+//     using String = std::string;
+//     using Event = iot::Event<String,String,String>;
+//     using Thermometer = iot::TemperatureSensor<String, String, Event>;
 
-    auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-    auto event = sensor.produceEvent();
+//     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
+//     auto event = sensor.produceEvent();
     
-    TRACER << "time - " << event.m_eventTime << " | data: " << event.m_data << "\n"; 
-    ASSERT_EQUAL_STR(event.m_eventType.c_str(), "temperature");
-    ASSERT_EQUAL_STR(event.m_deviceID.c_str(), "T-1");
-    ASSERT_EQUAL_STR(event.m_deviceType.c_str(), "Thermometer");
-    ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
+//     TRACER << "time - " << event.m_eventTime << " | data: " << event.m_data << "\n"; 
+//     ASSERT_EQUAL_STR(event.m_eventType.c_str(), "temperature");
+//     ASSERT_EQUAL_STR(event.m_deviceID.c_str(), "T-1");
+//     ASSERT_EQUAL_STR(event.m_deviceType.c_str(), "Thermometer");
+//     ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
 
-}
-END_TEST
+// }
+// END_TEST
 
-BEGIN_TEST(air_con)
-{
-    using String = std::string;
-    using Event = iot::Event<String,String,String>;
-    using Thermometer = iot::TemperatureSensor<String, String, Event>;
+// BEGIN_TEST(air_con)
+// {
+//     using String = std::string;
+//     using Event = iot::Event<String,String,String>;
+//     using Thermometer = iot::TemperatureSensor<String, String, Event>;
 
-    auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-    auto event = sensor.produceEvent();  
-}
-END_TEST
+//     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
+//     auto event = sensor.produceEvent();  
+// }
+// END_TEST
 // BEGIN_TEST(send_events_to_router)
 // {
 //     using String = std::string;
@@ -110,19 +110,17 @@ END_TEST
 
 // }
 // END_TEST
-
-// BEGIN_TEST(so)
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using Device = iot::Device<String, String, Event>;
-//     using Agent = iot::AgentFactory<Device, ConfigFile>;
-
-    
-// END_TEST
+BEGIN_TEST(soLoader)
+    using String = std::string;
+    // using Event = iot::Event<String,String,String>;
+    // using Device = iot::Device<String, String, Event>;
+    // using Agent = iot::AgentFactory<Device, ConfigFile>;
+END_TEST
 
 
 BEGIN_SUITE(IOT PROJECT)
-    TEST(temperature_sensor)
+    // TEST(temperature_sensor)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
+   TEST(soLoader)
 END_SUITE
