@@ -4,40 +4,38 @@
 #include <functional>
 #include <queue>
 #include <mutex>
+#include "iot_types.hpp"
 #include "abstract.hpp"
 
 namespace iot
 {
 
-template<typename EVENT>
 struct BacklogProducer : cpp::Abstract
 {
     BacklogProducer() = default;
-    virtual bool add(EVENT const& a_event) = 0;
+    virtual bool add(Event const& a_event) = 0;
 };
 
-template<typename EVENT>
 struct BacklogConsumer : cpp::Abstract
 {
     BacklogConsumer() = default;
-    virtual bool remove(EVENT& a_event) = 0;
-    virtual bool remove(std::function<void(EVENT const& a_retVal)> a_func) = 0;
+    virtual bool remove(Event& a_event) = 0;
+    virtual bool remove(std::function<void(Event const& a_retVal)> a_func) = 0;
 };
 
-template<typename EVENT>
-class BacklogQueue : public BacklogProducer<EVENT>, public BacklogConsumer<EVENT>
+class Backlog : public BacklogProducer, public BacklogConsumer
 {
 public:
-    BacklogQueue() = default;
+    Backlog() = default;
 
-    bool add(EVENT const& a_event)
+    bool add(Event const& a_event)
     {
         auto g = std::lock_guard(m_mtx);
         m_queue.push(a_event);
         return true;
     }
 
-    bool remove(EVENT& a_event)
+    bool remove(Event& a_event)
     {
         auto g = std::lock_guard(m_mtx);
         if(m_queue.empty() == true)
@@ -49,7 +47,7 @@ public:
         return true;
     }
 
-    virtual bool remove(std::function<void(EVENT const& a_retVal)> a_func)
+    virtual bool remove(std::function<void(Event const& a_retVal)> a_func)
     {
         auto g = std::lock_guard(m_mtx);
         if(m_queue.empty() == true)
@@ -69,7 +67,7 @@ public:
     }
 
 private:
-    std::queue<EVENT> m_queue;
+    std::queue<Event> m_queue;
     std::mutex m_mtx;
 };
 
