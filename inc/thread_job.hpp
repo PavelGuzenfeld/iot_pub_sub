@@ -7,8 +7,8 @@ namespace mt
 struct ThreadJob
 {
 public:
-    ThreadJob(){}
-    virtual ~ThreadJob(){}
+    ThreadJob() = default;
+    virtual ~ThreadJob() = default;
 
     virtual void* operator()(void* a_arg) = 0;
 
@@ -16,8 +16,6 @@ private:
     ThreadJob(ThreadJob const& o);
     ThreadJob& operator=(ThreadJob const& o);
 };
-
-//#include "inl/thread_job.hxx"
 
 } // namespace mt
 
