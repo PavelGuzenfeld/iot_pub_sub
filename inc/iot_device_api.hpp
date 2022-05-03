@@ -1,22 +1,19 @@
-#pragma once
+#ifndef IOT_DEVICE_API_HPP
+#define IOT_DEVICE_API_HPP
 
 #include "abstract.hpp"
+#include "iot_types.hpp"
 
 namespace iot
 {
 
-template <typename STRING>
-struct Sensor : public cpp::Abstract
+struct Device : public cpp::Abstract
 {
-    Sensor() = default;
-    virtual STRING eventData() = 0;
-};
-
-template <typename STRING>
-struct Controller : public cpp::Abstract
-{
-    Controller() = default;
-    virtual STRING handle(STRING const& a_eventData) = 0;
+    Device() = default;
+    virtual String handle(String const& a_eventData);
+    virtual String probe();
 };
 
 }   //namespace iot
+
+#endif //IOT_DEVICE_API_HPP

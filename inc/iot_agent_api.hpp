@@ -1,23 +1,25 @@
-#pragma once
+#ifndef IOT_AGENT_API_HPP
+#define IOT_AGENT_API_HPP
 
 #include "abstract.hpp"
+#include "iot_types.hpp"
 
 namespace iot
 {
 
-template <typename EVENT>
 struct EventProducer : public cpp::Abstract
 {
     EventProducer() = default;
-    virtual EVENT produceEvent() = 0;
+    virtual Event produce() = 0;
 };
 
-template <typename EVENT>
 struct EventHandler : public cpp::Abstract
 {
     EventHandler() = default;
-    virtual EVENT storeEvent(EVENT const& a_event) = 0;
-    virtual EVENT handleEvent() = 0;
+    virtual Event store(Event const& a_event) = 0;
+    virtual Event handle() = 0;
 };
 
 }   //namespace iot
+
+#endif  //IOT_AGENT_API_HPP
