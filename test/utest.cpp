@@ -9,10 +9,10 @@
 #include "iot_event.hpp"
 #include "iot_event_router.hpp"
 #include "iot_pub_sub.hpp"
-#include "iot_agent_factory.hpp"
-#include "iot_ini_reader.hpp"
 #include "blocking_queue.hpp"
 #include "thread_group.hpp"
+//#include "iot_agent_factory.hpp"
+//#include "iot_ini_reader.hpp"
 
 BEGIN_TEST(temperature_sensor)
 {
@@ -111,14 +111,14 @@ END_TEST
 // }
 // END_TEST
 
-BEGIN_TEST(so)
-    using String = std::string;
-    using Event = iot::Event<String,String,String>;
-    using Device = iot::Device<String, String, Event>;
-    using Agent = iot::AgentFactory<Device, ConfigFile>;
+// BEGIN_TEST(so)
+//     using String = std::string;
+//     using Event = iot::Event<String,String,String>;
+//     using Device = iot::Device<String, String, Event>;
+//     using Agent = iot::AgentFactory<Device, ConfigFile>;
 
     
-END_TEST
+// END_TEST
 
 
 BEGIN_SUITE(IOT PROJECT)
