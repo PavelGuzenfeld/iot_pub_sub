@@ -1,15 +1,22 @@
 #ifndef IOT_EVENT_ROUTER_HXX
 #define IOT_EVENT_ROUTER_HXX
 
-template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
-iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER && a_subs)
-:   m_subs(a_subs)
-{
+// template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
+// iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER && a_subs)
+// :   m_subs(a_subs)
+// {
 
-}
+// }
+
+// template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
+// iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER const& a_subs)
+// :   m_subs(a_subs)
+// {
+
+// }
 
 template<typename KEY, typename EVENT, typename DEVICE, typename CONTAINER>
-iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER const& a_subs)
+iot::EventRouter<KEY,EVENT,DEVICE,CONTAINER>::EventRouter(CONTAINER& a_subs)
 :   m_subs(a_subs)
 {
 
