@@ -4,7 +4,7 @@
 #include <condition_variable>
 #include <mutex>
 #include <functional>
-#include "queue.hpp"
+#include <queue>
 #include "blocking_queue_exception.hpp"
 
 namespace mt
@@ -15,7 +15,7 @@ template<typename T>
 class BlockingQueue
 {  
 public:
-    BlockingQueue(size_t a_size = 64);
+    BlockingQueue();
     ~BlockingQueue();
 
     bool enqueue(T const& a_element);
@@ -26,7 +26,6 @@ public:
 
     size_t size() const;
 
-    bool isFull() const;
     bool isEmpty() const;
 
     void shutdown();
@@ -38,7 +37,7 @@ private:
 private:
    mutable std::mutex m_mutex;
    mutable std::condition_variable m_condVar;
-   cpp::Queue<T> m_queue;
+   std::queue<T> m_queue;
    bool m_shutdown;
 };
 

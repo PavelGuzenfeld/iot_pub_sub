@@ -4,11 +4,11 @@
 #include <chrono>
 
 template<typename T>
- mt::BlockingQueue<T>::BlockingQueue(size_t a_size)
+ mt::BlockingQueue<T>::BlockingQueue()
  try
  :  m_mutex()
  ,  m_condVar()
- ,  m_queue(a_size)
+ ,  m_queue()
  ,  m_shutdown()
  {
 
@@ -33,7 +33,7 @@ bool mt::BlockingQueue<T>::enqueue(T const& a_element)
 try
 {
     std::unique_lock l(m_mutex);
-    m_condVar.wait(l, [this]{return m_queue.isFull() == false || m_shutdown == true;});
+    m_condVar.wait(l, [this]{return m_shutdown == true;});
     if(m_shutdown == true)
     {
         return false;
@@ -165,19 +165,6 @@ try
 {
     std::unique_lock g(m_mutex);
     return m_queue.isEmpty();
-}
-catch(...)
-{
-    std::string msg = "Internal component failed";
-    throw BlockingQueueError(msg);
-}
-
-template<typename T>
-bool mt::BlockingQueue<T>::isFull() const
-try
-{
-    std::unique_lock g(m_mutex);
-    return m_queue.isFull();
 }
 catch(...)
 {
