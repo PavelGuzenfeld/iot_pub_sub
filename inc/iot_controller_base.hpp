@@ -18,6 +18,6 @@ protected:
 
 }   //namespace iot
 
-#include "inl/iot_controller_base.hpp"
+#include "inl/iot_controller_base.hxx"
 
 #endif //IOT_CONTROLLER_BASE_HPP

@@ -1,47 +1,99 @@
 #include "mu_test.h"
 #include <string>
-// #include <chrono>
-// #include <thread>
+#include <chrono>
+#include <thread>
 #include <blocking_queue.hpp>
 #include <memory>
-// #include "iot_temperature_sensor.hpp"
-// #include "iot_backlog.hpp"
-// #include "iot_event.hpp"
-// #include "iot_event_router.hpp"
-// #include "iot_pub_sub.hpp"
-#include "iot_agent_factory.hpp"
-#include "iot_ini_reader.hpp"
-// #include "blocking_queue.h/pp"
-// #include "thread_group.hpp"
+#include "iot_temperature_sensor.hpp"
+#include "iot_backlog.hpp"
+#include "iot_event.hpp"
+#include "iot_event_router.hpp"
+#include "iot_pub_sub.hpp"
+#include "blocking_queue.hpp"
+#include "thread_group.hpp"
+// #include "iot_agent_factory.hpp"
+// #include "iot_ini_reader.hpp"
 
-// BEGIN_TEST(temperature_sensor)
-// {
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using Thermometer = iot::TemperatureSensor<String, String, Event>;
+BEGIN_TEST(temperature_sensor)
+{
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using Thermometer = iot::TemperatureSensor<String, String, Event>;
 
-//     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-//     auto event = sensor.produceEvent();
+    auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
+    auto event = sensor.produceEvent();
     
-//     TRACER << "time - " << event.m_eventTime << " | data: " << event.m_data << "\n"; 
-//     ASSERT_EQUAL_STR(event.m_eventType.c_str(), "temperature");
-//     ASSERT_EQUAL_STR(event.m_deviceID.c_str(), "T-1");
-//     ASSERT_EQUAL_STR(event.m_deviceType.c_str(), "Thermometer");
-//     ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
+    TRACER << "time - " << event.m_eventTime << " | data: " << event.m_data << "\n"; 
+    ASSERT_EQUAL_STR(event.m_eventType.c_str(), "temperature");
+    ASSERT_EQUAL_STR(event.m_deviceID.c_str(), "T-1");
+    ASSERT_EQUAL_STR(event.m_deviceType.c_str(), "Thermometer");
+    ASSERT_EQUAL_STR(event.m_deviceLocation.c_str(), "second floor");
 
-// }
-// END_TEST
+}
+END_TEST
 
-// BEGIN_TEST(air_con)
-// {
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using Thermometer = iot::TemperatureSensor<String, String, Event>;
+BEGIN_TEST(backlog)
+{
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using BacklogQueue = iot::BacklogQueue<Event>;
 
-//     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-//     auto event = sensor.produceEvent();  
-// }
-// END_TEST
+    auto backlog = BacklogQueue();
+    auto vec =  std::vector<Event>{{"1"},{"2"},{"3"}};
+
+    for(auto e: vec)
+    {
+        backlog.add(e);
+    }
+    auto i = 0;
+    while(backlog.isEmpty() == false)
+    {
+        Event e;
+        backlog.remove(e);
+        ASSERT_EQUAL(e.m_eventType, vec[i].m_eventType);
+        TRACER << e.m_eventType << "\n";
+        ++i;
+    }
+    ASSERT_EQUAL(backlog.isEmpty(), true);
+
+    for(auto e: vec)
+    {
+        backlog.add(e);
+    }
+    
+    auto mutatedBacklog = BacklogQueue();
+    while(backlog.isEmpty() == false)
+    {
+        String e = {};
+        auto echo = [&](Event const& a_event){e = "echo " + a_event.m_eventType;};
+        backlog.remove(echo);
+        mutatedBacklog.add({e});
+    }
+
+    i = 0;
+    while(mutatedBacklog.isEmpty() == false)
+    {
+        Event e;
+        mutatedBacklog.remove(e);
+        ASSERT_EQUAL(e.m_eventType, String("echo ") + vec[i].m_eventType);
+        TRACER << e.m_eventType << "\n";
+        ++i;
+    }
+}
+END_TEST
+
+BEGIN_TEST(air_con)
+{
+    using String = std::string;
+    using Event = iot::Event<String,String,String>;
+    using Thermometer = iot::TemperatureSensor<String, String, Event>;
+
+    auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
+    auto event = sensor.produceEvent();
+    ASSERT_PASS();
+}
+END_TEST
+
 // BEGIN_TEST(send_events_to_router)
 // {
 //     using String = std::string;
@@ -53,24 +105,24 @@
 
 //     auto sensor = Device{"temperature sensor 1","heat_sensor","floor 1", "no config"};
 
-    // auto eventSubscribers = Map();
-    // eventSubscribers["temperature"].emplace_back(Device{"con 1","air_con","floor 1", "temp > 30"});
-    // eventSubscribers["temperature"].emplace_back(Device{"con 2","air_con","floor 1", "temp > 30"});
-    // auto router = Router{eventSubscribers};
+//     auto eventSubscribers = Map();
+//     eventSubscribers["temperature"].emplace_back(Device{"con 1","air_con","floor 1", "temp > 30"});
+//     eventSubscribers["temperature"].emplace_back(Device{"con 2","air_con","floor 1", "temp > 30"});
+//     auto router = Router{eventSubscribers};
 
-    // for(size_t i = 0; i < 5; ++i)
-    // {
-    //     auto event = sensor.produce("temperature", std::to_string(i));
-    //     TRACER<< "Device id - " << event.m_deviceID << "| event: " << event.m_eventType << "\n";
-    //     router.rout(event);
-    // }
+//     for(size_t i = 0; i < 5; ++i)
+//     {
+//         auto event = sensor.produce("temperature", std::to_string(i));
+//         TRACER<< "Device id - " << event.m_deviceID << "| event: " << event.m_eventType << "\n";
+//         router.rout(event);
+//     }
 
-    // auto subscribers = eventSubscribers["temperature"];
-    // for(auto s: subscribers)
-    // {
-    //     auto count = s.getEvents().size();
-    //     ASSERT_EQUAL(count, 5);
-    // }
+//     auto subscribers = eventSubscribers["temperature"];
+//     for(auto s: subscribers)
+//     {
+//         auto count = s.getEvents().size();
+//         ASSERT_EQUAL(count, 5);
+//     }
 //     ASSERT_PASS();
     
 // }
@@ -111,7 +163,7 @@
 // }
 // END_TEST
 BEGIN_TEST(soLoader)
-    using String = std::string;
+    //using String = std::string;
     // using Event = iot::Event<String,String,String>;
     // using Device = iot::Device<String, String, Event>;
     // using Agent = iot::AgentFactory<Device, ConfigFile>;
@@ -119,8 +171,10 @@ END_TEST
 
 
 BEGIN_SUITE(IOT PROJECT)
-    // TEST(temperature_sensor)
+    TEST(temperature_sensor)
+    TEST(backlog)
+    TEST(air_con)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
-   TEST(soLoader)
+   //TEST(soLoader)
 END_SUITE

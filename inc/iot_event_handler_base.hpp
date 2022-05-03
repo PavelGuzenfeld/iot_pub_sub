@@ -1,15 +1,17 @@
 #ifndef IOT_EVENT_HANDLER_BASE_HPP
 #define IOT_EVENT_HANDLER_BASE_HPP
 
+#include "iot_agent_api.hpp"
+
 namespace iot
 {
 
 template<typename STRING, typename LOCATION, typename EVENT, typename BACKLOG>
-class EventHandlerBase
+class EventHandlerBase : public iot::EventHandler<EVENT>
 {
 protected:
     EventHandlerBase(STRING const& a_eventType, STRING const& a_id, STRING const& a_type, LOCATION const& a_location, BACKLOG const& a_backlog);
-    virtual void consumeEvent(EVENT const& a_event) = 0;
+    virtual EVENT consumeEvent(EVENT const& a_event) = 0;
     virtual EVENT handleEvent() = 0;
 
 protected:
