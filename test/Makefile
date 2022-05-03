@@ -15,9 +15,9 @@ INC_DIR += -I /home/linuxbrew/.linuxbrew/include/
 LDFLAGS = -L /home/linuxbrew/.linuxbrew/lib/
 LDLIBS = -lpthread
 
-TARGET = utest
+TARGET = utest 
 
-OBJS = utest.o
+OBJS = utest.o ../src/iot_sensor.o
 
 $(TARGET): $(OBJS)
 
