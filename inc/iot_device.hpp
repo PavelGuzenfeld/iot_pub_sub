@@ -6,27 +6,24 @@
 namespace iot
 {
 
-template<typename STRING, typename LOCATION, typename EVENT>
+template<typename STRING, typename LOCATION, typename EVENT, typename BACKLOG, typename HANDLER>
 class Device
 {
 public:
-    Device(STRING const& a_id, STRING const& a_type, LOCATION const& a_location, STRING const& a_config);
+    Device(STRING const& a_id, STRING const& a_type, LOCATION const& a_location, STRING const& a_config, BACKLOG const& a_backlog, HANDLER const& handler);
 
     EVENT produce(STRING const& a_eventType, STRING const& a_data);
     void consume(EVENT const& a_event);
-
-    std::vector<EVENT> const& getEvents() const;
-
-private:
-    std::vector<EVENT> m_events;
+    void handle();
 
 private:
     STRING m_id;
     STRING m_type;
     LOCATION m_location;
-    STRING m_config;
+    BACKLOG m_events;
+    HANDLER m_handler;
 };
 
-#include "inl/iot_device.hxx"
-
 } // namespace iot
+
+#include "inl/iot_device.hxx"
