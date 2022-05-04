@@ -39,4 +39,21 @@ bool nextNumber(String const& a_conf, int& a_retVal)
     return false;
 }
 
+Event response(Attributes const& a_attributes, String a_data)
+{
+    return
+    {
+        a_attributes.m_eventType,
+
+        a_attributes.m_id,
+        a_attributes.m_type,
+
+        a_attributes.m_location,
+        timestamp(),
+
+        a_data,
+        a_attributes.m_loggers
+    };
+}
+
 }   //namespace iot
