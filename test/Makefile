@@ -17,7 +17,7 @@ LDLIBS = -lpthread
 
 TARGET = utest 
 
-OBJS = utest.o ../src/iot_sensor.o
+OBJS = utest.o ../src/iot_sensor.o ../src/iot_controller.o ../src/iot_utils.o
 
 $(TARGET): $(OBJS)
 

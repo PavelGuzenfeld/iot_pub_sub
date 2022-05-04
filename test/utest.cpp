@@ -2,6 +2,8 @@
 #include <vector>
 #include "iot_sensor.hpp"
 #include "iot_backlog.hpp"
+#include "iot_controller.hpp"
+#include "iot_air_con.hpp"
 
 BEGIN_TEST(temperature_sensor)
 {
@@ -62,17 +64,32 @@ BEGIN_TEST(backlog)
 }
 END_TEST
 
-// BEGIN_TEST(controller_agent)
-// {
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using Thermometer = iot::TemperatureSensor<String, String, Event>;
+BEGIN_TEST(controller_agent)
+{
+    auto sensor  = iot::Sensor{{"temperature", "T-1", "Thermometer", "second floor","logger - 1"}, {"26 - 65"}};
+    auto event = sensor.produce();
+    auto airCon = std::make_unique<iot::AirCon>("Air con config");
+    auto controller = iot::Controller({"temperature", "Air-1", "air_con", "second floor","logger - 1"}, {std::move(airCon)});
+    
+    auto response = controller.store(event);
+    TRACER << response.m_data << " " << response.m_eventType << " by " << response.m_deviceID << "\n";
+    ASSERT_EQUAL(response.m_eventType, "temperature");
+    ASSERT_EQUAL(response.m_deviceID, "Air-1");
+    ASSERT_EQUAL(response.m_data, "stored");
 
-//     auto sensor  = Thermometer("temperature", "T-1", "Thermometer", "second floor");
-//     auto event = sensor.produceEvent();
-//     ASSERT_PASS();
-// }
-// END_TEST
+    response = controller.handle();
+    TRACER << response.m_data << " " << response.m_eventType << " by " << response.m_deviceID << "\n";
+    ASSERT_EQUAL(response.m_eventType, "temperature");
+    ASSERT_EQUAL(response.m_deviceID, "Air-1");
+    ASSERT_EQUAL(response.m_data.substr(0, response.m_data.find(" ")), "handled");
+
+    response = controller.probe();
+    TRACER << response.m_data << " " << response.m_eventType << " by " << response.m_deviceID << "\n";
+    ASSERT_EQUAL(response.m_eventType, "temperature");
+    ASSERT_EQUAL(response.m_deviceID, "Air-1");
+    ASSERT_EQUAL(response.m_data, "probed");
+}
+END_TEST
 
 // BEGIN_TEST(send_events_to_router)
 // {
@@ -153,7 +170,7 @@ END_TEST
 BEGIN_SUITE(IOT PROJECT)
     TEST(temperature_sensor)
     TEST(backlog)
-    // TEST(controller_agent)
+    TEST(controller_agent)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
    //TEST(soLoader)
