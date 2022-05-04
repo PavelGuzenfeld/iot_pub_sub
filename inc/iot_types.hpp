@@ -15,10 +15,13 @@ using log = std::string;
 struct Event
 {
     String m_eventType;
-    Time m_eventTime;
-    Location m_deviceLocation;
+    
     String m_deviceID;
     String m_deviceType;
+    
+    Location m_deviceLocation;
+    Time m_eventTime;
+    
     String m_data;
     log m_loggers;
 };
