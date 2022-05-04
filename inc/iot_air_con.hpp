@@ -13,11 +13,12 @@ struct AirCon : public Device
 
     String handle(String const& a_eventData)
     {
-        return String() + "handled - " + a_eventData;
+        return "handled - " + a_eventData;
     }
+
     String probe()
     {
-        return "air con probed";
+        return "probed";
     }
 };
 
