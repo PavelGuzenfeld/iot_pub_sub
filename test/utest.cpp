@@ -1,5 +1,7 @@
 #include "mu_test.h"
+#include <vector>
 #include "iot_sensor.hpp"
+#include "iot_backlog.hpp"
 
 BEGIN_TEST(temperature_sensor)
 {
@@ -14,55 +16,51 @@ BEGIN_TEST(temperature_sensor)
 }
 END_TEST
 
-// BEGIN_TEST(backlog)
-// {
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using BacklogQueue = iot::BacklogQueue<Event>;
+BEGIN_TEST(backlog)
+{
+    auto backlog = iot::Backlog();
+    auto vec =  std::vector<iot::Event>{{"1"},{"2"},{"3"}};
 
-//     auto backlog = BacklogQueue();
-//     auto vec =  std::vector<Event>{{"1"},{"2"},{"3"}};
+    for(auto e: vec)
+    {
+        backlog.add(e);
+    }
+    auto i = 0;
+    while(backlog.isEmpty() == false)
+    {
+        iot::Event e;
+        backlog.remove(e);
+        ASSERT_EQUAL(e.m_eventType, vec[i].m_eventType);
+        TRACER << e.m_eventType << "\n";
+        ++i;
+    }
+    ASSERT_EQUAL(backlog.isEmpty(), true);
 
-//     for(auto e: vec)
-//     {
-//         backlog.add(e);
-//     }
-//     auto i = 0;
-//     while(backlog.isEmpty() == false)
-//     {
-//         Event e;
-//         backlog.remove(e);
-//         ASSERT_EQUAL(e.m_eventType, vec[i].m_eventType);
-//         TRACER << e.m_eventType << "\n";
-//         ++i;
-//     }
-//     ASSERT_EQUAL(backlog.isEmpty(), true);
-
-//     for(auto e: vec)
-//     {
-//         backlog.add(e);
-//     }
+    for(auto e: vec)
+    {
+        backlog.add(e);
+    }
     
-//     auto mutatedBacklog = BacklogQueue();
-//     while(backlog.isEmpty() == false)
-//     {
-//         String e = {};
-//         auto echo = [&](Event const& a_event){e = "echo " + a_event.m_eventType;};
-//         backlog.remove(echo);
-//         mutatedBacklog.add({e});
-//     }
+    auto mutatedBacklog = iot::Backlog();
+    while(backlog.isEmpty() == false)
+    {
+        iot::String e = {};
+        auto echo = [&](iot::Event const& a_event){e = "echo " + a_event.m_eventType;};
+        backlog.remove(echo);
+        mutatedBacklog.add({e});
+    }
 
-//     i = 0;
-//     while(mutatedBacklog.isEmpty() == false)
-//     {
-//         Event e;
-//         mutatedBacklog.remove(e);
-//         ASSERT_EQUAL(e.m_eventType, String("echo ") + vec[i].m_eventType);
-//         TRACER << e.m_eventType << "\n";
-//         ++i;
-//     }
-// }
-// END_TEST
+    i = 0;
+    while(mutatedBacklog.isEmpty() == false)
+    {
+        iot::Event e;
+        mutatedBacklog.remove(e);
+        ASSERT_EQUAL(e.m_eventType, iot::String("echo ") + vec[i].m_eventType);
+        TRACER << e.m_eventType << "\n";
+        ++i;
+    }
+}
+END_TEST
 
 // BEGIN_TEST(controller_agent)
 // {
@@ -154,7 +152,7 @@ END_TEST
 
 BEGIN_SUITE(IOT PROJECT)
     TEST(temperature_sensor)
-    // TEST(backlog)
+    TEST(backlog)
     // TEST(controller_agent)
     //TEST(send_events_to_router)
    // TEST(pub_sub)
