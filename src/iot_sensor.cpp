@@ -25,7 +25,18 @@ Event Sensor::produce()
 {
     auto time = timestamp();
     auto data = eventData(m_config);
-    return {m_attributes.m_eventType, time, m_attributes.m_location, m_attributes.m_id, m_attributes.m_type, data, m_attributes.m_loggers};
+    return {
+                m_attributes.m_eventType,
+                
+                m_attributes.m_id, 
+                m_attributes.m_type, 
+
+                m_attributes.m_location, 
+                time, 
+                
+                data, 
+                m_attributes.m_loggers
+            };
 }
 
 } //namspace iot
