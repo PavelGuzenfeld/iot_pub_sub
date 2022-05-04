@@ -12,9 +12,9 @@ namespace iot
 class Controller : public EventHandler
 {
 public:
-    using Device = std::unique_ptr<Device>;
+    using DevicePtr = std::unique_ptr<Device>;
 
-    Controller(Attributes const& a_attributes, Device const& a_device, Config const& a_config);
+    Controller(Attributes const& a_attributes, DevicePtr a_device);
     Event store(Event const& a_event) final;
     Event handle() final;
     Event probe();
@@ -22,7 +22,7 @@ public:
 private:
     Attributes m_attributes;
     Backlog m_eventBacklog;
-    Device m_device;
+    DevicePtr m_device;
 };
 
  //m_device{std::make_unique<DEVICE>{a_config}}
