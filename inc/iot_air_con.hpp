@@ -4,7 +4,7 @@
 namespace iot
 {
 
-struct AirCon : public iot::Controller
+struct AirCon : public Device
 {
     AirCon(String const& a_config)
     {
@@ -14,6 +14,10 @@ struct AirCon : public iot::Controller
     String handle(String const& a_eventData)
     {
         return String() + "handled - " + a_eventData;
+    }
+    String probe()
+    {
+        return "air con probed";
     }
 };
 
