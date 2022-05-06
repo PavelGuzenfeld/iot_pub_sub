@@ -9,7 +9,6 @@ namespace iot
 
 struct Device : public cpp::Abstract
 {
-    Device() = default;
     virtual String handle(String const& a_eventData) = 0;
     virtual String probe() = 0;
 };
