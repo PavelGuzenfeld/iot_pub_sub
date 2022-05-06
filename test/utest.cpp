@@ -4,6 +4,7 @@
 #include "iot_backlog.hpp"
 #include "iot_controller.hpp"
 #include "iot_air_con.hpp"
+#include "iot_event_router.hpp"
 
 BEGIN_TEST(temperature_sensor)
 {
@@ -68,8 +69,8 @@ BEGIN_TEST(controller_agent)
 {
     auto sensor  = iot::Sensor{{"temperature", "T-1", "Thermometer", "second floor","logger - 1"}, {"26 - 65"}};
     auto event = sensor.produce();
-    auto airCon = std::make_unique<iot::AirCon>("Air con config");
-    auto controller = iot::Controller({"temperature", "Air-1", "air_con", "second floor","logger - 1"}, {std::move(airCon)});
+    auto airCon = std::make_shared<iot::AirCon>("Air con config");
+    auto controller = iot::Controller({"temperature", "Air-1", "air_con", "second floor","logger - 1"}, {airCon});
     
     auto response = controller.store(event);
     TRACER << response.m_data << " " << response.m_eventType << " by " << response.m_deviceID << "\n";
@@ -91,39 +92,41 @@ BEGIN_TEST(controller_agent)
 }
 END_TEST
 
-// BEGIN_TEST(send_events_to_router)
-// {
-//     using String = std::string;
-//     using Event = iot::Event<String,String,String>;
-//     using Backlog = std::shared_ptr<iot::BacklogConsumer<Event>>;
-//     using Device = iot::Device<String, String, Event, Backlog, std::unique_ptr<iot::Controller<String>>>;
-//     using Map = std::map<String, std::vector<Device>>;
-//     using Router = iot::EventRouter<String,Event,Device,Map&>;
+BEGIN_TEST(send_events_to_router)
+{
+    auto airCon = std::make_shared<iot::AirCon>("Air con config");
+    auto controller = iot::Controller({"temperature", "Air-1", "air_con", "second floor","logger - 1"}, {airCon});
 
-//     auto sensor = Device{"temperature sensor 1","heat_sensor","floor 1", "no config"};
+    auto eventSubscribers = iot::EventRouter::Subscriptions{};
+    eventSubscribers["temperature"].emplace_back(iot::Controller{{"temperature", "Air-1", "air_con", "second floor","logger - 1"},{airCon}});
+    eventSubscribers["temperature"].emplace_back(iot::Controller{{"temperature", "Air-2", "air_con", "second floor","logger - 1"},{airCon}});    
+    auto router = iot::EventRouter{eventSubscribers};
 
-//     auto eventSubscribers = Map();
-//     eventSubscribers["temperature"].emplace_back(Device{"con 1","air_con","floor 1", "temp > 30"});
-//     eventSubscribers["temperature"].emplace_back(Device{"con 2","air_con","floor 1", "temp > 30"});
-//     auto router = Router{eventSubscribers};
-
-//     for(size_t i = 0; i < 5; ++i)
-//     {
-//         auto event = sensor.produce("temperature", std::to_string(i));
-//         TRACER<< "Device id - " << event.m_deviceID << "| event: " << event.m_eventType << "\n";
-//         router.rout(event);
-//     }
-
-//     auto subscribers = eventSubscribers["temperature"];
-//     for(auto s: subscribers)
-//     {
-//         auto count = s.getEvents().size();
-//         ASSERT_EQUAL(count, 5);
-//     }
-//     ASSERT_PASS();
     
-// }
-// END_TEST
+    auto sensor = iot::Sensor{{"temperature", "T-1", "Thermometer", "second floor","logger - 1"}, {"26 - 65"}};
+    for(size_t i = 0; i < 5; ++i)
+    {
+        auto event = sensor.produce();
+        TRACER<< "Device id - " << event.m_deviceID << "| event: " << event.m_eventType << "\n";
+        router.rout(event);
+    }
+
+    auto& subscribers = eventSubscribers["temperature"];
+    auto count = 0;
+    while(subscribers[0].handle().m_deviceType != "")
+    {
+        ++count;
+    }
+    ASSERT_EQUAL(count, 5);
+
+    count = 0;    
+    while(subscribers[1].handle().m_deviceType != "")
+    {
+        ++count;
+    }
+    ASSERT_EQUAL(count, 5);
+}
+END_TEST
 
 // BEGIN_TEST(pub_sub)
 // {
@@ -171,7 +174,7 @@ BEGIN_SUITE(IOT PROJECT)
     TEST(temperature_sensor)
     TEST(backlog)
     TEST(controller_agent)
-    //TEST(send_events_to_router)
+    TEST(send_events_to_router)
    // TEST(pub_sub)
    //TEST(soLoader)
 END_SUITE

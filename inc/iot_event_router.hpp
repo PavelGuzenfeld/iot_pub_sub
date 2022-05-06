@@ -19,7 +19,7 @@ public:
     void rout(Event const& a_event);
 
 private:
-    Subscriptions m_subs;
+    Subscriptions& m_subs;
 };
 
 }   //namespace iot
