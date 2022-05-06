@@ -11,6 +11,13 @@ Controller::Controller(Attributes const& a_attributes, DevicePtr a_device)
 
 }
 
+Controller::Controller(Controller && a_other)
+:   m_attributes(std::move(a_other.m_attributes))
+,   m_device(std::move(a_other.m_device))
+{
+
+}
+
 Event Controller::store(Event const& a_event)
 {
     m_eventBacklog.add(a_event);
@@ -19,7 +26,7 @@ Event Controller::store(Event const& a_event)
 
 Event Controller::handle()
 {
-    Event returnEvent;
+    Event returnEvent = {};
     auto Handlinglambda = [&](Event const& a_event)
     {
        auto data = m_device->handle(a_event.m_data);

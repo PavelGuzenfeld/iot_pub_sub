@@ -14,6 +14,7 @@ class Controller : public EventHandler
 public:
     using DevicePtr = std::shared_ptr<Device>;
     Controller(Attributes const& a_attributes, DevicePtr a_device);
+    Controller(Controller && a_other);
     Event store(Event const& a_event) final;
     Event handle() final;
     Event probe();
