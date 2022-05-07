@@ -5,6 +5,7 @@
 #include "iot_controller.hpp"
 #include "iot_air_con.hpp"
 #include "iot_event_router.hpp"
+#include "iot_pub_sub.hpp"
 
 BEGIN_TEST(temperature_sensor)
 {
@@ -128,6 +129,17 @@ BEGIN_TEST(send_events_to_router)
 }
 END_TEST
 
+// BEGIN_TEST(blocking_q)
+// {
+//     auto q = mt::BlockingQueue<iot::Event>();
+//     q.enqueue({});
+//     q.dequeue();
+//     q.size();
+//     q.isEmpty();
+//     ASSERT_PASS();
+// }
+// END_TEST
+
 // BEGIN_TEST(pub_sub)
 // {
 //     using STRING = std::string;
@@ -175,6 +187,7 @@ BEGIN_SUITE(IOT PROJECT)
     TEST(backlog)
     TEST(controller_agent)
     TEST(send_events_to_router)
+    //TEST(blocking_q)
    // TEST(pub_sub)
    //TEST(soLoader)
 END_SUITE
