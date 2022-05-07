@@ -41,8 +41,8 @@ private:
    bool m_shutdown;
 };
 
-#include "inl/blocking_queue.hxx"
-
 } //namespace mt
+
+#include "inl/blocking_queue.hxx"
 
 #endif // BLOCKING_QUEUE_HPP

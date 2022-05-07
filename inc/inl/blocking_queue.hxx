@@ -3,8 +3,11 @@
 
 #include <chrono>
 
+namespace mt
+{
+
 template<typename T>
- mt::BlockingQueue<T>::BlockingQueue()
+BlockingQueue<T>::BlockingQueue()
  try
  :  m_mutex()
  ,  m_condVar()
@@ -20,7 +23,7 @@ catch(...)
 }
 
 template<typename T>
-mt::BlockingQueue<T>::~BlockingQueue()
+BlockingQueue<T>::~BlockingQueue()
 {
     if(m_shutdown == false)
     {
@@ -29,7 +32,7 @@ mt::BlockingQueue<T>::~BlockingQueue()
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::enqueue(T const& a_element)
+bool BlockingQueue<T>::enqueue(T const& a_element)
 try
 {
     std::unique_lock l(m_mutex);
@@ -40,7 +43,7 @@ try
     }
     else
     {    
-        m_queue.enqueue(a_element);
+        m_queue.push(a_element);
         m_condVar.notify_all();
     }
     return true;
@@ -52,19 +55,19 @@ catch(...)
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::dequeue(T& a_retRef)
+bool BlockingQueue<T>::dequeue(T& a_retRef)
 try
 {
     std::unique_lock l(m_mutex);
-    m_condVar.wait(l, [this]{return m_queue.isEmpty() == false || m_shutdown == true;});
+    m_condVar.wait(l, [this]{return m_queue.empty() == false || m_shutdown == true;});
     if(m_shutdown == true)
     {
         return false;
     }
     else
     {
-        a_retRef = m_queue.first();
-        m_queue.dequeue();
+        a_retRef = m_queue.back();
+        m_queue.pop();
         m_condVar.notify_all();
     }
     return true;
@@ -76,18 +79,18 @@ catch(...)
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::dequeue()
+bool BlockingQueue<T>::dequeue()
 try
 {
     std::unique_lock l(m_mutex);
-    m_condVar.wait(l, [this]{return m_queue.isEmpty() == false || m_shutdown == true;});
+    m_condVar.wait(l, [this]{return m_queue.empty() == false || m_shutdown == true;});
     if(m_shutdown == true)
     {
         return false;
     }
     else
     {
-        m_queue.dequeue();
+        m_queue.pop();
         m_condVar.notify_all();
     }
     return true;
@@ -99,20 +102,20 @@ catch(...)
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::dequeue(std::function<void(T const& a_retVal)> a_func)
+bool BlockingQueue<T>::dequeue(std::function<void(T const& a_retVal)> a_func)
 try
 {
     std::unique_lock l(m_mutex);
-    m_condVar.wait(l, [this]{return m_queue.isEmpty() == false || m_shutdown == true;});
+    m_condVar.wait(l, [this]{return m_queue.empty() == false || m_shutdown == true;});
     if(m_shutdown == true)
     {
         return false;
     }
     else
     {
-        auto retRef = m_queue.first();
+        auto retRef = m_queue.back();
         a_func(retRef);
-        m_queue.dequeue();
+        m_queue.pop();
         m_condVar.notify_all();
     }
     return true;
@@ -124,18 +127,18 @@ catch(...)
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::first(T& a_retRef) const
+bool BlockingQueue<T>::first(T& a_retRef) const
 try
 {
     std::unique_lock l(m_mutex);
-    m_condVar.wait(l, [this]{return m_queue.isEmpty() == false || m_shutdown == true;});
+    m_condVar.wait(l, [this]{return m_queue.empty() == false || m_shutdown == true;});
     if(m_shutdown == true)
     {
         return false;
     }
     else
     {
-        a_retRef = m_queue.first();
+        a_retRef = m_queue.back();
         m_condVar.notify_all();
     }
     return true;
@@ -147,7 +150,7 @@ catch(...)
 }
 
 template<typename T>
-size_t mt::BlockingQueue<T>::size() const
+size_t BlockingQueue<T>::size() const
 try
 {
     std::unique_lock g(m_mutex);
@@ -160,11 +163,11 @@ catch(...)
 }
 
 template<typename T>
-bool mt::BlockingQueue<T>::isEmpty() const
+bool BlockingQueue<T>::isEmpty() const
 try
 {
     std::unique_lock g(m_mutex);
-    return m_queue.isEmpty();
+    return m_queue.empty();
 }
 catch(...)
 {
@@ -173,11 +176,13 @@ catch(...)
 }
 
 template<typename T>
-void mt::BlockingQueue<T>::shutdown()
+void BlockingQueue<T>::shutdown()
 {
     std::unique_lock g(m_mutex);
     m_shutdown = true;
     m_condVar.notify_all();
 }
+
+}   //namespace mt
 
 #endif // BLOCKING_QUEUE_HXX
