@@ -1,34 +1,25 @@
 #ifndef IOT_PUB_SUB_HPP
 #define IOT_PUB_SUB_HPP
 
-#include<thread_job.hpp>
-#include<mutex>
+
+#include <mutex>
+#include "thread_job.hpp"
+#include "iot_event_router.hpp"
+#include "thread_group.hpp"
+#include "blocking_queue.hpp"
+#include "iot_pub_sub_internals.hpp"
 
 namespace iot
 {
 
-template<typename ROUTER, typename QUEUE, typename EVENT> 
-struct PubSubFO: public mt::ThreadJob
-{
-    PubSubFO(ROUTER& a_router, QUEUE& a_queue, bool a_on );
-    void* operator()(void* a_arg) final;
-
-    void stop();
-    bool isON();
-
-    ROUTER& m_router;
-    QUEUE& m_queue;
-    bool m_on;
-    std::mutex m_mtx;
-};
-
-template<typename ROUTER, typename QUEUE, typename EVENT, typename THREADS> 
 class PubSub 
 {
 public:
-    using FO = PubSubFO <ROUTER,QUEUE,EVENT>;   
+    using Queue = mt::BlockingQueue<Event>;
+    using FO = PubSubFO <EventRouter, Queue, Event>;   
+    using Threads = mt::ThreadGroup<FO>;
 
-    PubSub(ROUTER & a_router, QUEUE & a_queue, size_t a_concurrency = 1);
+    PubSub(EventRouter & a_router, Queue & a_queue, size_t a_concurrency = 1);
     ~PubSub();
 
     void stop();
@@ -36,12 +27,8 @@ public:
 private:
     size_t m_concurrency;
     FO m_fo;
-    THREADS m_threads;
+    Threads m_threads;
 };
-
-
-
-#include "inl/iot_pub_sub.hxx"
 
 }   //namspace iot
 

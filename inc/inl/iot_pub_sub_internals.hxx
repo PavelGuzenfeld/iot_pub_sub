@@ -1,29 +1,8 @@
-#ifndef IOT_PUB_SUB_HXX
-#define IOT_PUB_SUB_HXX
+#ifndef IOT_PUB_SUB_INTERNALS_HXX
+#define IOT_PUB_SUB_INTERNALS_HXX
 
-template<typename ROUTER, typename QUEUE, typename EVENT, typename THREADS>
-PubSub<ROUTER, QUEUE,EVENT,THREADS>::PubSub(ROUTER & a_router, QUEUE & a_queue, size_t a_concurrenty)
-:   m_concurrency(a_concurrenty)
-,   m_fo{a_router,a_queue,true}
-,   m_threads{m_fo, m_concurrency}
+namespace iot
 {
-
-}
-
-template<typename ROUTER, typename QUEUE, typename EVENT, typename THREADS>
-PubSub<ROUTER, QUEUE,EVENT,THREADS>::~PubSub()
-{
-    m_threads.join();
-}
-
-template<typename ROUTER, typename QUEUE, typename EVENT, typename THREADS>
-void PubSub<ROUTER, QUEUE,EVENT,THREADS>::stop()
-{
-    m_fo.m_queue.shutdown();
-    m_fo.stop();
-}
-
-
 
 template<typename ROUTER, typename QUEUE, typename EVENT>
 PubSubFO<ROUTER, QUEUE, EVENT>::PubSubFO(ROUTER& a_router, QUEUE& a_queue, bool a_on )
@@ -59,5 +38,7 @@ bool PubSubFO<ROUTER, QUEUE,EVENT>::isON()
     auto g = std::lock_guard(m_mtx);
     return m_on;
 }
+
+}   //namespace iot
 
 #endif // IOT_PUB_SUB_HXX
