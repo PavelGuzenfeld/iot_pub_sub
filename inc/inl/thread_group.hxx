@@ -1,6 +1,5 @@
 #ifndef THREAD_Group_HXX
 #define THREAD_Group_HXX
-#include <iostream>
 
 template<typename F>
 mt::ThreadGroup<F>::ThreadGroup(std::vector<F>& a_funcObjVec)
